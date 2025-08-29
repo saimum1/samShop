@@ -8,6 +8,7 @@ import ProductDetailPage from './ProductDetailPage';
 import { productOne } from './interfaceproductone';
 import { ApiProduct } from '../productlistpage/interfaceProductlist';
 
+export const dynamic = 'force-dynamic';
 const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
   id: apiData.id,
   name: apiData.name,
@@ -30,7 +31,7 @@ const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
   inStock: apiData.status, 
 });
 
-export default function ClientPage() {
+export default  function ClientPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [data, setData] = useState<productOne | null>(null);
