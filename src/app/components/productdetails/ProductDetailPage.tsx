@@ -61,25 +61,20 @@ export default function ProductDetailPage({productdata}: Props) {
           </div>
           {product && (
           <div className={styles.thumbnailContainer}>
-            {['image1','image2','image3','image4'].map((imgname) =>(
-             
-             <div 
+            {(['image1','image2','image3','image4'] as ImageKey[]).map((imgname) => (
+              <div 
                 key={imgname}
-                className={`${styles.thumbnail} ${ selectedImage === product?.[imgname] ? styles.activeThumbnail : ''}`}
-                onClick={() => setSelectedImage(product?.[imgname])}
+                className={`${styles.thumbnail} ${selectedImage === product?.[imgname] ? styles.activeThumbnail : ''}`}
+                onClick={() => setSelectedImage(product?.[imgname] ?? null)}
               >
-                
                 <img 
-                  src={product?.[imgname] } 
+                  src={product?.[imgname] ?? ''} 
                   alt={imgname}
                   width={100}
                   height={100}
                 />
               </div>
-              
-              )
-            
-            )}
+            ))}
           </div>
             )}
         </div>
