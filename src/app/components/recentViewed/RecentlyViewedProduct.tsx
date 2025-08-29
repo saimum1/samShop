@@ -25,7 +25,7 @@ const RecentlyViewedProduct = (props: Props) => {
                 ×
             </button>
             <div className={styles.recentlyViewedImage}>
-                <img src={recentlyViewedProduct?.image} alt={recentlyViewedProduct?.title} />
+                <img src={recentlyViewedProduct?.image} width={100} alt={recentlyViewedProduct?.title} />
             </div>
             <div className={styles.recentlyViewedText}>
                 <div className={styles.productName}>{recentlyViewedProduct.title}</div>
