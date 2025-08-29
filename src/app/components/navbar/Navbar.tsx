@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useContext } from 'react';
-type Props = {}
+
 
 const Navbar = () => {
   const router = useRouter();

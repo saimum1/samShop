@@ -19,5 +19,5 @@ export interface productOne{
     quantity: number
     categoryId: string
     inStock: string
-    [key: string]: any;
+    // [key: string]: any
 }
