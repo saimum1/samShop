@@ -2,17 +2,44 @@
 import { useEffect, useState ,useMemo} from 'react';
 import styles from './productdetails.module.css';
 import { productOne } from './interfaceproductone';
-type Props={
-  productdata: productOne | null
-}
-  type ImageKey = 'image1' | 'image2' | 'image3' | 'image4';
-export default function ProductDetailPage({productdata}: Props) {
+import { useSearchParams } from 'next/navigation';
+import { ApiProduct } from '../productlistpage/interfaceProductlist';
+import axios from 'axios';
+import config from '@/config';
 
+const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
+  id: apiData.id,
+  name: apiData.name,
+  price: apiData.price,
+  description: apiData.description,
+  image1: apiData.imageink1,
+  image2: apiData.imageink2,
+  image3: apiData.imageink3,
+  image4: apiData.imageink4,
+  operator: {
+    id: apiData.operator.id,
+    code: apiData.operator.code,
+    logo: apiData.operator.logo,
+    name: apiData.operator.name,
+    status: apiData.operator.status,
+  },
+  lotNo: apiData.lotNo,
+  quantity: apiData.quantity,
+  categoryId: apiData.categoryId,
+  inStock: apiData.status, 
+});
+
+type ImageKey = 'image1' | 'image2' | 'image3' | 'image4';
+
+export default function ProductDetailPage() {
+  
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [product, setproduct] = useState<productOne | null>(null);
 
-  console.log("productdata",productdata)
+  // console.log("productdata",productdata)
   const handleQuantityChange = (type: 'increase' | 'decrease') => {
     if (type === 'increase') {
       setQuantity(prev => prev + 1);
@@ -34,14 +61,28 @@ export default function ProductDetailPage({productdata}: Props) {
   };
 
   const totalPrice = useMemo(() => {
-  return (productdata?.price ?? 0) * quantity;
-}, [productdata?.price, quantity]);
+  return (product?.price ?? 0) * quantity;
+  }, [product?.price, quantity]);
 
 
   useEffect(() => {
-    setproduct(productdata);
-    setSelectedImage(productdata?.image1 || null);
-  }, [productdata]);
+    if (!id) return;
+    const loadProduct = async () => {
+      try {
+        const url = `${config.apiUrl}/api/product/getone/${id}`;
+        const response = await axios.get(url);
+        if (response?.data?.products?.[0]) {
+            console.log("a323232",response?.data?.products?.[0])
+            setproduct(mapApiDataToProductOne(response.data.products[0]));
+            setSelectedImage(response.data.products[0].imageink1);
+        }
+      } catch (err) {
+        console.error("Failed to fetch product:", err);
+      }
+    };
+
+    loadProduct();
+  }, [id]);
 
 
   return (
