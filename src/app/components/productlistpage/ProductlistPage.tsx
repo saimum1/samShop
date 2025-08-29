@@ -5,7 +5,7 @@ import styles from './ProductListPage.module.css';
 import Link from 'next/link';
 import axios from 'axios';
 import config from '@/config';
-import { Product } from './interfaceProductlist';
+import { Product ,ApiProduct} from './interfaceProductlist';
 import RecentlyViewedProduct from '../recentViewed/RecentlyViewedProduct';
 
 const ProductListPage: FC = () => {
@@ -26,11 +26,11 @@ const ProductListPage: FC = () => {
         console.log('Fetching from:', url);
         const response = await axios.get(url);
         const { products: apiProducts, totalPages } = response.data;
-        const mappedProducts: Product[] = apiProducts.map((item: any) => ({
+        const mappedProducts: Product[] = apiProducts.map((item: ApiProduct) => ({
           id: item.id,
           title: item.name,
           price: item.price,
-          originalPrice: item.originalPrice, 
+          originalPrice: item.price, 
           recentlyViewed: item.id === '68b07186b22a1e4f3014ac9f' && currentPage === 1, 
           image: item.imageink1,
         }));

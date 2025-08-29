@@ -6,8 +6,9 @@ import axios from 'axios';
 import config from '@/config';
 import ProductDetailPage from './ProductDetailPage';
 import { productOne } from './interfaceproductone';
+import { ApiProduct } from '../productlistpage/interfaceProductlist';
 
-const mapApiDataToProductOne = (apiData: any): productOne => ({
+const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
   id: apiData.id,
   name: apiData.name,
   price: apiData.price,
@@ -42,6 +43,7 @@ export default function ClientPage() {
         const url = `${config.apiUrl}/api/product/getone/${id}`;
         const response = await axios.get(url);
         if (response?.data?.products?.[0]) {
+            console.log("a323232",response?.data?.products?.[0])
           setData(mapApiDataToProductOne(response.data.products[0]));
         }
       } catch (err) {
