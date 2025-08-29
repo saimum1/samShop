@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import NextImage from "next/image";
 import lemon from "../../../../public/images/lemon.png";
 import orange from "../../../../public/images/orange.png";
@@ -84,8 +84,11 @@ const getVibrantColor = async (
 
     let bestScore = 0,
       bestColor: [number, number, number] | null = null;
-    let avg = [0, 0, 0],
-      count = 0;
+    // let avg = [0, 0, 0],
+    //   count = 0;
+    const avg = [0, 0, 0];
+let count = 0;
+
 
     for (let i = 0; i < data.length; i += 4) {
       const [r, g, b, a] = data.slice(i, i + 4);
@@ -157,20 +160,35 @@ export default function ProductShowcase({ height = "100vh", products }: Props) {
 
   const active = items[index];
 
+  // useEffect(() => {
+  //   if (!active?.image) return;
+  //   let cancelled = false;
+  //   const src =
+  //     typeof active.image === "string" ? active.image : active.image.src;
+
+  //   getVibrantColor(src, bg).then((hex) => {
+  //     if (!cancelled) setBg(hex);
+  //   });
+
+  //   return () => {
+  //     cancelled = true;
+  //   };
+  // }, [active?.image]);
   useEffect(() => {
-    if (!active?.image) return;
-    let cancelled = false;
-    const src =
-      typeof active.image === "string" ? active.image : active.image.src;
+  if (!active?.image) return;
+  let cancelled = false;
+  const src =
+    typeof active.image === "string" ? active.image : active.image.src;
 
-    getVibrantColor(src, bg).then((hex) => {
-      if (!cancelled) setBg(hex);
-    });
+  getVibrantColor(src, bg).then((hex) => {
+    if (!cancelled) setBg(hex);
+  });
 
-    return () => {
-      cancelled = true;
-    };
-  }, [active?.image]);
+  return () => {
+    cancelled = true;
+  };
+}, [active?.image, bg]);
+
 
   const onWheel = useCallback(
     (e: WheelEvent) => {
