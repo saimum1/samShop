@@ -1,0 +1,273 @@
+/* pages/product/[id].module.css */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 5rem;
+
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+/* Images Section */
+.imagesSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mainImage {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.productImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnailContainer {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.thumbnail:hover {
+  border-color: #e0e0e0;
+}
+
+.activeThumbnail {
+  border-color: #4CAF50;
+}
+
+/* Details Section */
+.detailsSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.productName {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #4CAF50;
+  margin: 0;
+}
+
+.description {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Quantity Section */
+.quantitySection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantityLabel {
+  font-weight: 500;
+  color: #333;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quantityButton {
+  background: #f5f5f5;
+  border: none;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.quantityButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.quantityButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityValue {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.addToCartButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addToCartButton:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.addToCartButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.secondaryActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.secondaryButton {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.secondaryButton:hover {
+  border-color: #999;
+  background-color: #f9f9f9;
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+/* Categories Section */
+.categoriesSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.categoriesLabel {
+  font-weight: 500;
+  color: #333;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.category {
+  color: #666;
+}
+
+/* Share Section */
+.shareSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shareLabel {
+  font-weight: 500;
+  color: #333;
+}
+
+.shareButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.shareButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.shareButton:hover {
+  border-color: #999;
+  background-color: #f9f9f9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .productContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .mainImage {
+    height: 350px;
+  }
+  
+  .productName {
+    font-size: 1.5rem;
+  }
+  
+  .price {
+    font-size: 1.5rem;
+  }
+  
+  .secondaryActions {
+    flex-direction: column;
+  }
+}
