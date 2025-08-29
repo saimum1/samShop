@@ -31,7 +31,7 @@ const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
 
 type ImageKey = 'image1' | 'image2' | 'image3' | 'image4';
 
-export default function ProductDetailPage() {
+const ProductDetailPage=()=> {
   
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -189,3 +189,6 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+
+
+export default ProductDetailPage
