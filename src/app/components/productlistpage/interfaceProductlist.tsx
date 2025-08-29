@@ -2,9 +2,9 @@ export interface Product {
   id: string; 
   title: string;
   price: number;
-  originalPrice?: number; 
-  recentlyViewed?: boolean; 
-  image?: string; 
+  originalPrice: number; 
+  recentlyViewed: boolean; 
+  image: string; 
 }
 export interface ApiProduct {
   id: string;
@@ -16,7 +16,7 @@ export interface ApiProduct {
   imageink2: string;
   imageink3: string;
   imageink4: string;
-  logo?: string;
+  logo: string;
   lotNo: string;
   operator: {
     id: string;

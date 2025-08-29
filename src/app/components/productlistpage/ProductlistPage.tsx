@@ -39,17 +39,23 @@ const ProductListPage: FC = () => {
         setProducts(mappedProducts);
         setTotalPages(totalPages || 1);
         console.log('API Products loaded:', mappedProducts);
-      } catch (err: any) {
-        const errorMessage = err.response
-          ? `API Error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`
-          : `Network Error: ${err.message}`;
-        setError(errorMessage);
-        console.error('Fetch error:', {
-          message: err.message,
-          status: err.response?.status,
-          data: err.response?.data,
-        });
-      } finally {
+      } catch (err: unknown) {
+  let errorMessage: string;
+
+  if (axios.isAxiosError(err)) {
+    errorMessage = err.response
+      ? `API Error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`
+      : `Network Error: ${err.message}`;
+  } else if (err instanceof Error) {
+    errorMessage = `Error: ${err.message}`;
+  } else {
+    errorMessage = 'An unknown error occurred';
+  }
+
+  setError(errorMessage);
+  console.error('Fetch error:', err);
+}
+ finally {
         setLoading(false);
       }
     };

@@ -1,9 +1,7 @@
 import React from 'react'
 import ProductlistPage from './ProductlistPage'
 
-type Props = {}
-
-function page({}: Props) {
+function page() {
   return (
     <ProductlistPage/>
   )
