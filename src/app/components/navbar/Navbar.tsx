@@ -204,14 +204,14 @@ const Navbar = () => {
                                       zIndex: 10,
                                     }}
                                   >
-                                    <a href="/auth/logout" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link href="/auth/logout" style={{ textDecoration: 'none', color: 'inherit' }}>
                                       Logout
-                                    </a>
+                                    </Link>
                                   </div>
                                 )}
                     </div>
                     :
-                    <span style={{marginRight:'20px'}}><a href="/auth/login">Login</a></span>
+                    <span style={{marginRight:'20px'}}><Link href="/auth/login">Login</Link></span>
             }
 
 
