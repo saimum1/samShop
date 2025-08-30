@@ -6,6 +6,10 @@ import { useSearchParams } from 'next/navigation';
 import { ApiProduct } from '../productlistpage/interfaceProductlist';
 import axios from 'axios';
 import config from '@/config';
+import { useDispatch ,useSelector } from "react-redux";
+import { addToCart } from "@/toolkit/cartSlice";
+import { RootState } from '@/toolkit/cartStore';
+
 
 const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
   id: apiData.id,
@@ -32,14 +36,15 @@ const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
 type ImageKey = 'image1' | 'image2' | 'image3' | 'image4';
 
 const ProductDetailPage=()=> {
-  
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [product, setproduct] = useState<productOne | null>(null);
+  const { items } = useSelector((state: RootState) => state.cart);
+  console.log("itemsfrom",items)
 
-  // console.log("productdata",productdata)
   const handleQuantityChange = (type: 'increase' | 'decrease') => {
     if (type === 'increase') {
       setQuantity(prev => prev + 1);
@@ -49,8 +54,21 @@ const ProductDetailPage=()=> {
   };
 
   const handleAddToCart = () => {
-    alert(`Added ${quantity} item(s) to cart`);
-  };
+  if (!product) return;
+
+  dispatch(
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image1 ?? '',  
+      quantity: quantity,   
+      category: product.operator.name  
+    })
+  );
+
+  alert(`Added ${quantity} ${product.name}(s) to cart`);
+};
 
   const handleAddToWishlist = () => {
     alert("Added to wishlist");

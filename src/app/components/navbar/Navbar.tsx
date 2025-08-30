@@ -1,10 +1,18 @@
 "use client";
+import { RootState } from '@/toolkit/cartStore';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useContext } from 'react';
+import { useDispatch,useSelector } from "react-redux";
 
 
 const Navbar = () => {
   const router = useRouter();
+  const items=useSelector((state: RootState) => state.cart.items);
+  const subtotal = items?.reduce((sum, item) => sum + item.quantity, 0);
+
   const [clicked, setClicked] = useState(false);
   const [clickedItem, setClickedItem] = useState('Highlights');
   const [resumeLink, setResumeLink] = useState('');
@@ -100,30 +108,19 @@ const Navbar = () => {
         style={{
           display: 'flex',
           height: '100%',
-          width: '70%',
+          width: '80%',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        {/* <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-        >
-        
-        </div> */}
-
+      
         <div
           style={{
-            flex: 1,
+            flex: 1.5,
             display: 'flex',
             gap: '3%',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
             color: styles.textSecondary,
             fontWeight: '700',
           }}
@@ -149,10 +146,31 @@ const Navbar = () => {
               
             </span>
           ))}
+
+
                  
         </div>
 
 
+  <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+
+          
+          <Link href={'/components/cart'} style={{display:'flex',flexDirection:'column',position:'relative'}}>
+              <span style={{position:'absolute',top:'-14px',right:'-12px', backgroundColor:'red',width:'20px',height:'20px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'12px'}}>{subtotal}</span>
+              <span >
+                  <FontAwesomeIcon icon={faCartShopping} size='lg'/>
+              </span>
+          </Link> 
+        
+        </div>
 
       </div>
       <style>
