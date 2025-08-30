@@ -1,23 +1,30 @@
 "use client";
 import { RootState } from '@/toolkit/cartStore';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch,useSelector } from "react-redux";
-
+import { useUser } from '@auth0/nextjs-auth0';
 
 const Navbar = () => {
+  const { user, error, isLoading } = useUser();
+  console.log("user",user)
   const router = useRouter();
   const items=useSelector((state: RootState) => state.cart.items);
   const subtotal = items?.reduce((sum, item) => sum + item.quantity, 0);
-
+  const [showLogout, setShowLogout] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [clickedItem, setClickedItem] = useState('Highlights');
   const [resumeLink, setResumeLink] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
   const [hasShadow, setHasShadow] = useState(false);
+  const [mounted, setmounted] = useState(false);
+   useEffect(() => {
+    setmounted(true);
+  }, []);
+
   const styles = { background: '#f7f0ed',
     text: '#0b3449ff',
     cardBackground: '#ffffff',
@@ -161,10 +168,55 @@ const Navbar = () => {
             cursor: 'pointer',
           }}
         >
+          {user ? 
+             <div style={{backgroundColor:'transparent' ,cursor:'pointer',gap:`10px`,position:'relative'
+                            ,height:"2.6rem",width:'100%' ,
+                            padding:'8px 16px',display:"flex",justifyContent:'flex-end',alignItems:'center'}}
+                          // onClick={handleToggleLogout} // Toggle on click
+      onMouseEnter={() => setShowLogout(true)} // Show on hover
+      onMouseLeave={() => setShowLogout(false)} // Hide on hover leave
+                            >
+                              <div style={{display:'flex',justifyContent:'flex-end' ,alignItems:'center' ,height:'100%',
+                                color:'black' ,fontFamily:"inter",fontWeight:"400" ,lineHeight:"15px",}}>
+                                       <span>{user?.name}</span> 
+                                 
+                            </div>
 
-          
+
+                                <div style={{width:'28px' ,height:'28px',borderRadius:'50%',border:`1px solid black`,overflow:'hidden',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center',boxShadow:'0px 0px 10px  whitesmoke',}}>
+                                <img src={user?.picture }  style={{width:'100%' ,height:'100%'}}/>
+                                </div> 
+
+                                {showLogout && (
+                                  <div
+                                    style={{
+                                      position: 'absolute',
+                                      top: '100%', 
+                                      right: '0px',
+                                      backgroundColor: '#fff',
+                                      borderRadius: '8px',
+                                      padding: '8px 16px',
+                                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                      color: '#d32f2f', 
+                                      fontFamily: 'inter',
+                                      fontWeight: '500',
+                                      animation: 'fadeIn 0.3s ease-in-out', 
+                                      zIndex: 10,
+                                    }}
+                                  >
+                                    <a href="/auth/logout" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                      Logout
+                                    </a>
+                                  </div>
+                                )}
+                    </div>
+                    :
+                    <span style={{marginRight:'20px'}}><a href="/auth/login">Login</a></span>
+            }
+
+
           <Link href={'/components/cart'} style={{display:'flex',flexDirection:'column',position:'relative'}}>
-              <span style={{position:'absolute',top:'-14px',right:'-12px', backgroundColor:'red',width:'20px',height:'20px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'12px'}}>{subtotal}</span>
+            {mounted && subtotal !== 0 &&  <span style={{position:'absolute',top:'-14px',right:'-12px', backgroundColor:'red',width:'20px',height:'20px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'12px'}}>{subtotal}</span>}
               <span >
                   <FontAwesomeIcon icon={faCartShopping} size='lg'/>
               </span>
@@ -203,6 +255,18 @@ const Navbar = () => {
             stroke: ${styles.text};
           }
 
+
+
+          @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
         `}
       </style>

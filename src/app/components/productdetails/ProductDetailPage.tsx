@@ -9,7 +9,8 @@ import config from '@/config';
 import { useDispatch ,useSelector } from "react-redux";
 import { addToCart } from "@/toolkit/cartSlice";
 import { RootState } from '@/toolkit/cartStore';
-
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const mapApiDataToProductOne = (apiData: ApiProduct): productOne => ({
   id: apiData.id,
@@ -55,7 +56,7 @@ const ProductDetailPage=()=> {
 
   const handleAddToCart = () => {
   if (!product) return;
-
+  toast.success(`Added ${quantity} ${product.name}(s) to cart`);
   dispatch(
     addToCart({
       id: product.id,
@@ -67,7 +68,8 @@ const ProductDetailPage=()=> {
     })
   );
 
-  alert(`Added ${quantity} ${product.name}(s) to cart`);
+   
+  
 };
 
   const handleAddToWishlist = () => {
@@ -105,6 +107,17 @@ const ProductDetailPage=()=> {
 
   return (
     <div className={styles.container}>
+       <ToastContainer
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+      />
       <div className={styles.productContainer}>
         <div className={styles.imagesSection}>
           <div className={styles.mainImage}>

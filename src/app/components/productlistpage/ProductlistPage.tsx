@@ -7,8 +7,13 @@ import axios from 'axios';
 import config from '@/config';
 import { Product ,ApiProduct} from './interfaceProductlist';
 import RecentlyViewedProduct from '../recentViewed/RecentlyViewedProduct';
-
+import { productOne } from '../productdetails/interfaceproductone';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/toolkit/cartSlice';
 const ProductListPage: FC = () => {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [PER_PAGE, setPER_PAGE] = useState(8);
@@ -25,6 +30,7 @@ const ProductListPage: FC = () => {
         const url = `${config.apiUrl}/api/product/clientproducts?page=${currentPage}&perPage=${PER_PAGE}`;
         console.log('Fetching from:', url);
         const response = await axios.get(url);
+        console.log("dadad",response.data)
         const { products: apiProducts, totalPages } = response.data;
         const mappedProducts: Product[] = apiProducts.map((item: ApiProduct) => ({
           id: item.id,
@@ -33,6 +39,7 @@ const ProductListPage: FC = () => {
           originalPrice: item.price, 
           recentlyViewed: item.id === '68b07186b22a1e4f3014ac9f' && currentPage === 1, 
           image: item.imageink1,
+          category: item.operator.name,
         }));
 
         setrecentlyViewedProduct(mappedProducts.find((p) => p.recentlyViewed) || null);
@@ -68,6 +75,25 @@ const ProductListPage: FC = () => {
     }
   };
 
+    const handleAddToCart = (producta:Product) => {
+      console.log("new product",producta)
+    if (!producta) return;
+    toast.success(`Added ${producta.title} to cart`);
+    dispatch(
+      addToCart({
+        id: producta.id,
+        name: producta.title,
+        price: producta.price,
+        image: producta.image ?? '',  
+        quantity: 1,   
+        category: producta.category
+      })
+    );
+  
+     
+    
+  };
+  
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
@@ -76,6 +102,17 @@ const ProductListPage: FC = () => {
 
   return (
     <div className={styles.container}>
+       <ToastContainer
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+      />
       {recentlyViewedProduct && 
       <RecentlyViewedProduct product={recentlyViewedProduct} />}
       <div className={styles.content}>
@@ -83,14 +120,14 @@ const ProductListPage: FC = () => {
           {products
             ?.filter((p) => !p.recentlyViewed)
             ?.map((product) => (
-              <Link href={`/components/productdetails?id=${product.id}`} key={product.id}>
-                <div className={styles.productCard}>
+              
+                <div className={styles.productCard} key={product.id}>
             
                   {product.originalPrice && (
                     <div className={styles.discountBadge}>OFF 11%</div>
                   )}
 
-                
+                <Link href={`/components/productdetails?id=${product.id}`} key={product.id}>
                   <div className={styles.productImageContainer}>
                     <img
                       src={product.image}
@@ -108,7 +145,7 @@ const ProductListPage: FC = () => {
                     </div>
                   </div>
 
-          
+                </Link>
                   <div className={styles.productInfo}>
                     <h3 className={styles.productTitle}>{product.title}</h3>
                     <div className={styles.priceContainer}>
@@ -123,10 +160,10 @@ const ProductListPage: FC = () => {
                     </div>
 
          
-                    <button className={styles.addToCart}>Add To Cart</button>
+                    <button className={styles.addToCart} onClick={() => handleAddToCart(product)}>Add To Cart</button>
                   </div>
                 </div>
-              </Link>
+            
             ))}
         </div>
 

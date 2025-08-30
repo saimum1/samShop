@@ -5,6 +5,7 @@ export interface Product {
   originalPrice: number; 
   recentlyViewed: boolean; 
   image: string; 
+  category: string; 
 }
 export interface ApiProduct {
   id: string;

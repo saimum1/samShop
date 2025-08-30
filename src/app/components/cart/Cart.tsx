@@ -3,24 +3,69 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from './cart.module.css';
 import { useDispatch,useSelector } from "react-redux";
-import { addToCart, decreaseQuantity, increaseQuantity, removeFromCart } from "@/toolkit/cartSlice"; 
+import { addToCart, clearCart, decreaseQuantity, increaseQuantity, removeFromCart } from "@/toolkit/cartSlice"; 
 import { RootState } from '@/toolkit/cartStore';
-
+import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cart: React.FC = () => {
-
+  const router = useRouter();
+  const { user, error, isLoading } = useUser();
+  const[paymentStatus,setPaymentStatus]=useState(false)
   const dispatch = useDispatch();
   const { items } = useSelector((state: RootState) => state.cart);
   console.log("items",items)
   const subtotal = items?.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleCheckout = () => {
-    // Handle checkout
-    console.log('Checkout clicked');
+    const handleCheckout = () => {
+        if(!user) {
+            router.push("/auth/login");
+            return;
+        }
+            const phoneNumber = "8801757963889"; 
+            const messageItems = items.map(
+            (i) => `${i.name} x${i.quantity} - $${(i.price * i.quantity).toFixed(2)}`
+            ).join("\n");
+            const message = `Hello Rakibul, I would like to order the following items:\n${messageItems}\nSubtotal: $${subtotal.toFixed(2)}`;
+            const whatsappLink = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            const fallbackLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+            const newWindow = window.open("about:blank", "_blank");
+            if (newWindow) {
+            const start = Date.now();
+            newWindow.location.href = whatsappLink;
+            setTimeout(() => {
+                if (Date.now() - start < 2100) {
+                newWindow.location.href = fallbackLink;
+                }else{
+                      setPaymentStatus(true)
+                      dispatch(clearCart()); 
+                      toast.success("Order sent! Redirecting to home...");
+                        setTimeout(() => {
+                            // router.push("/");
+                        }, 2000);
+                }
+            }, 2000);
+            } else {
+            window.location.href = fallbackLink;
+            }
   };
 
   return (
     <div className={styles.container}>
+         <ToastContainer
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+      />
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Cart</h1>
@@ -115,14 +160,14 @@ const Cart: React.FC = () => {
               </div>
             </div>
 
-            <button className={styles.checkoutBtn} onClick={handleCheckout}>
-              Check Out
+            <button className={styles.checkoutBtn} onClick={paymentStatus === true ? undefined : handleCheckout} style={{backgroundColor:paymentStatus === true ? 'green' : 'red'}}>
+              {paymentStatus === true ?'Payment Done' : 'Check Out'}
             </button>
 
             <div className={styles.paymentMethods}>
               <h4 className={styles.paymentTitle}>We Accept</h4>
               <div className={styles.paymentIcons}>
-                <div className={styles.paymentIcon}>PayPal</div>
+                <div className={styles.paymentIcon} style={{backgroundColor:'#279e27',color:'white'}}>WhatsApp Only! 😅</div>
                 <div className={styles.paymentIcon}>Stripe</div>
                 <div className={styles.paymentIcon}>Apple Pay</div>
                 <div className={styles.paymentIcon}>WebMoney</div>
