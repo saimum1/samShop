@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useContext, use } from 'react';
 import { useDispatch,useSelector } from "react-redux";
 import { useUser } from '@auth0/nextjs-auth0';
+import { RotateProp } from '@fortawesome/fontawesome-svg-core';
 
 const Navbar = () => {
   const { user, error, isLoading } = useUser();
@@ -236,8 +237,12 @@ const Navbar = () => {
                                        <span>{user? user?.name : 'user'}</span>
                                 </div>
                             <div style={{cursor:'pointer',display:'flex',justifyContent:'center' ,alignItems:'center' ,flex:'1',width:'100%' ,height:'100%',transition:'all 300ms'}} >
-                                <FontAwesomeIcon icon={faCaretDown} style={{color:'green' ,height:'25px' ,width:"25px",transition:'all 400ms'}} rotation={clicked && 180 || 0}/>
-                            </div>
+                               <FontAwesomeIcon 
+                                    icon={faCaretDown} 
+                                    style={{color:'green' ,height:'25px' ,width:"25px",transition:'all 400ms'}} 
+                                    rotation={clicked ? 180 as RotateProp : 0 as RotateProp}
+                                  />
+                              </div>
                     
                     </div>
 
