@@ -34,7 +34,7 @@ export const store = configureStore({
   preloadedState,
 });
 
-// Subscribe to store changes
+
 store.subscribe(() => saveState(store.getState()));
 
 export type RootState = ReturnType<typeof store.getState>;

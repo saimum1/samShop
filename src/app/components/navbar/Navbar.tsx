@@ -215,7 +215,7 @@ const Navbar = () => {
             }
 
 
-          <Link href={'/components/cart'} style={{display:'flex',flexDirection:'column',position:'relative'}}>
+          <Link href={'/components/cart'} style={{display:'flex',flexDirection:'column',position:'relative',cursor:'pointer'}}>
             {mounted && subtotal !== 0 &&  <span style={{position:'absolute',top:'-14px',right:'-12px', backgroundColor:'red',width:'20px',height:'20px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'12px'}}>{subtotal}</span>}
               <span >
                   <FontAwesomeIcon icon={faCartShopping} size='lg'/>
