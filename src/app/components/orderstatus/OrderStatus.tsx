@@ -105,7 +105,7 @@ useEffect(() => {
         <div style={{width:'90%',height:'100vh' ,overflow:'auto'}}>
         {orderData?.length > 0 && (
             orderData?.map((order) => (
-                <div style={{ width:'100%', padding: '20px'}}>
+                <div key={order.id} style={{ width:'100%', padding: '20px'}}>
                 <div style={{width:'100%'}}>
                     <div style={{display: 'flex',
                     justifyContent: 'flex-start',

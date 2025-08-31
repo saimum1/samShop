@@ -4,7 +4,7 @@ import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, use } from 'react';
 import { useDispatch,useSelector } from "react-redux";
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -95,6 +95,47 @@ const Navbar = () => {
 
 
 
+    const[clickedsec,setclickedsec]=useState(false)
+    
+    const login={
+            'lang':'Log in',
+            'image':'',
+            'code':1
+        }
+    const logout={
+            'lang': 'Log out',
+            'image':'',
+            'code':2
+    }    
+
+    const data = [
+      { ...(user ? logout : login) },
+      {
+        'lang': 'Order List',
+        'image': '',
+        'code': 3
+      }
+    ];
+
+
+    const showlangoptions=()=>{
+            setClicked(!clicked)
+            setclickedsec(!clickedsec)
+    }
+
+    const handleoptions=(item:number)=>{
+        console.log("options",item)
+        if(item===1){
+            router.push('/auth/login')
+        }
+        if(item===2){
+            router.push('/auth/logout')
+        }
+        if(item===3){
+            router.push('/components/orderstatus')
+        }
+    }
+
 
   return (
     <div
@@ -168,51 +209,86 @@ const Navbar = () => {
             cursor: 'pointer',
           }}
         >
-          {user ? 
-             <div style={{backgroundColor:'transparent' ,cursor:'pointer',gap:`10px`,position:'relative'
-                            ,height:"2.6rem",width:'100%' ,
-                            padding:'8px 16px',display:"flex",justifyContent:'flex-end',alignItems:'center'}}
-                          // onClick={handleToggleLogout} // Toggle on click
-      onMouseEnter={() => setShowLogout(true)} // Show on hover
-      onMouseLeave={() => setShowLogout(false)} // Hide on hover leave
+
+
+
+                <div style={{height:"auto",width:'16.5rem', borderTopRightRadius:"8px",
+                    borderTopLeftRadius: "8px",borderBottomLeftRadius:clicked?'':'8px',borderBottomRightRadius:clicked?'':'8px',
+                    marginRight:"3rem",display:"flex",justifyContent:'center',alignItems:'center',flexDirection:'column',}}>
+                    
+
+                    <div style={{cursor:'pointer',border:'1px solid #6d85a353'
+                            ,height:"2.6rem",width:'100%' , borderTopRightRadius:"8px",
+                            borderTopLeftRadius: "8px",borderBottomLeftRadius:clicked?'':'8px',borderBottomRightRadius:clicked?'':'8px',
+                            padding:'8px 16px',display:"flex",justifyContent:'center',alignItems:'center'}}
+                            
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#55555522")}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor ='')}
+                            onClick={()=>showlangoptions()}
                             >
-                              <div style={{display:'flex',justifyContent:'flex-end' ,alignItems:'center' ,height:'100%',
-                                color:'black' ,fontFamily:"inter",fontWeight:"400" ,lineHeight:"15px",}}>
-                                       <span>{user?.name}</span> 
-                                 
-                            </div>
-
-
-                                <div style={{width:'28px' ,height:'28px',borderRadius:'50%',border:`1px solid black`,overflow:'hidden',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center',boxShadow:'0px 0px 10px  whitesmoke',}}>
-                                <img src={user?.picture }  style={{width:'100%' ,height:'100%'}}/>
+                            <div style={{display:'flex',justifyContent:'center' ,alignItems:'center' ,flex:'1',width:'100%' ,height:'100%'}}>
+                                <div style={{width:'28px' ,height:'28px',borderRadius:'50%',border:`1px solid #6d85a3`,overflow:'hidden',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center',boxShadow:'0px 0px 5px  #6d85a3',}}>
+                                <img src={user?.picture}  style={{width:'100%' ,height:'100%'}}/>
                                 </div> 
-
-                                {showLogout && (
-                                  <div
-                                    style={{
-                                      position: 'absolute',
-                                      top: '100%', 
-                                      right: '0px',
-                                      backgroundColor: '#fff',
-                                      borderRadius: '8px',
-                                      padding: '8px 16px',
-                                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                      color: '#d32f2f', 
-                                      fontFamily: 'inter',
-                                      fontWeight: '500',
-                                      animation: 'fadeIn 0.3s ease-in-out', 
-                                      zIndex: 10,
-                                    }}
-                                  >
-                                    <Link href="/auth/logout" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                      Logout
-                                    </Link>
-                                  </div>
-                                )}
+                            </div>
+                            <div style={{display:'flex',gap:"8%",justifyContent:'flex-start' ,alignItems:'center' ,flex:'8',width:'100%' ,height:'100%',
+                            color:styles.text ,fontFamily:"inter",fontWeight:"400" ,lineHeight:"15px",fontSize:"100%",paddingLeft:'16px'}}>
+                                       <span>{user? user?.name : 'user'}</span>
+                                </div>
+                            <div style={{cursor:'pointer',display:'flex',justifyContent:'center' ,alignItems:'center' ,flex:'1',width:'100%' ,height:'100%',transition:'all 300ms'}} >
+                                <FontAwesomeIcon icon={faCaretDown} style={{color:'green' ,height:'25px' ,width:"25px",transition:'all 400ms'}} rotation={clicked && 180 || 0}/>
+                            </div>
+                    
                     </div>
-                    :
-                    <span style={{marginRight:'20px'}}><Link href="/auth/login">Login</Link></span>
-            }
+
+
+                        <div 
+                            style={{
+                            cursor: "pointer",
+                            backgroundColor: 'whitesmoke',
+                            width: "16.5rem",
+                            borderBottomRightRadius: "8px",
+                            borderBottomLeftRadius:"8px",
+                            height: clicked?'5rem':"0px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexDirection: "column",
+                            position: "absolute",
+                            top: "3.7rem",
+                            right: "13.55rem",
+                            zIndex: 99,
+                            transition: "all 500ms",
+                            
+                            }}
+                        >
+                            {clickedsec && data.map((item,index,array) => (
+                            <div
+                                key={item.code}
+                                style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                width: "100%",
+                                height: "2.6rem",
+                                border:'1px solid #6d85a353',
+                                borderBottomLeftRadius:index === (array.length -1)? '8px':'',
+                                borderBottomRightRadius:index === (array.length -1)? '8px':'',
+                                borderBottom:index === (array.length -1)?'':'2px solid #6d85a353',
+                                }}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#55555522")}
+                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
+                                
+                            >
+                                  
+                                <div onClick={() =>handleoptions(item.code)} style={{ display: "flex", justifyContent: "center", alignItems: "center", flex: "1", width: "100%", height: "100%", color:styles.text, fontFamily: "inter", fontWeight: "500", lineHeight: "15px", fontSize: "16px" }}>
+                                    {item.lang} 
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                </div>
+
 
 
           <Link href={'/components/cart'} style={{display:'flex',flexDirection:'column',position:'relative',cursor:'pointer'}}>
@@ -221,6 +297,8 @@ const Navbar = () => {
                   <FontAwesomeIcon icon={faCartShopping} size='lg'/>
               </span>
           </Link> 
+
+          
         
         </div>
 
