@@ -50,7 +50,7 @@ const ChatWidget: React.FC = () => {
 
   useEffect(() => {
     // ws.current = new WebSocket(`ws://${config.apiUrl}/api/ws/client/${clientId}`);
-    ws.current = new WebSocket(`ws://${config.apiUrl.replace(/^http(s)?:\/\//, "")}/api/ws/client/${clientId}`);
+    ws.current = new WebSocket(`${config.apiUrlWebSocket}/api/ws/client/${clientId}`);
 
 
     ws.current.onopen = () => {
