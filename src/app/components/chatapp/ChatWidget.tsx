@@ -88,7 +88,7 @@ const ChatWidget: React.FC = () => {
       })
     );
 
-    setMessages((prev) => [...prev, { from: username, text }]);
+    setMessages((prev) => [...prev, { from: username as string, text }]);
   };
 
   return (
