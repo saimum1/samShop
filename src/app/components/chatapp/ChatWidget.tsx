@@ -5,19 +5,37 @@ import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 
+// interface Message {
+//   from: string;
+//   text: string;
+//   data?: {
+//     message_date?: string;
+//     [key: string]: any;
+//   };
+//   id?: string;
+//   client_msg_id?: string;
+// }
+
+interface MessageData {
+  message_date?: string;
+  username?: string;
+  gmail?: string;
+  image?: string;
+  messageid?: string;
+  fromType?: string;
+}
+
 interface Message {
   from: string;
   text: string;
-  data?: {
-    message_date?: string;
-    [key: string]: any;
-  };
+  data?: MessageData;
   id?: string;
   client_msg_id?: string;
 }
 
+
 const ChatWidget: React.FC = () => {
-  const { user, error, isLoading } = useUser();
+  const { user} = useUser();
     console.log("user as status",user)
   const clientId = user?.email;
   const username = user?.name;
