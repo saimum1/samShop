@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/navbar/Navbar";
 import ReduxProvider from "./ReduxProvider";
+import ChatWidget from "./components/chatapp/ChatWidget";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,6 +33,8 @@ export default function RootLayout({
       
       <Navbar/>
         {children}
+         <ChatWidget />
+
           </ReduxProvider>
       </body>
       

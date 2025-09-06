@@ -7,8 +7,6 @@ import NextImage from "next/image";
 import lemon from "../../../../public/images/lemon.png";
 import orange from "../../../../public/images/orange.png";
 import blast from "../../../../public/images/blast.png";
-
-
 type Product = {
   id: string | number;
   name: string;
@@ -277,6 +275,10 @@ export default function ProductShowcase({ height = "100vh", products }: Props) {
       }}
     >
 
+
+       
+
+        
       <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center" }}>
         {items?.map((p, i) => {
           const isActive = i === index;
