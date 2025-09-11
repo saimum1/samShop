@@ -227,10 +227,12 @@ const Navbar = () => {
                             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor ='')}
                             onClick={()=>showlangoptions()}
                             >
-                            <div style={{display:'flex',justifyContent:'center' ,alignItems:'center' ,flex:'1',width:'100%' ,height:'100%'}}>
-                                <div style={{width:'28px' ,height:'28px',borderRadius:'50%',border:`1px solid #6d85a3`,overflow:'hidden',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center',boxShadow:'0px 0px 5px  #6d85a3',}}>
-                                <img src={user?.picture}  style={{width:'100%' ,height:'100%'}}/>
-                                </div> 
+                            <div style={{display:'flex', justifyContent:'center', alignItems:'center', flex:'1', width:'100%', height:'100%'}}>
+                              {user?.picture && (
+                                <div style={{width:'28px', height:'28px', borderRadius:'50%', border:`1px solid #6d85a3`, overflow:'hidden', display:'flex', justifyContent:'center', alignItems:'center', textAlign:'center', boxShadow:'0px 0px 5px #6d85a3'}}>
+                                  <img src={user.picture} style={{width:'100%', height:'100%'}} alt="User profile" />
+                                </div>
+                              )}
                             </div>
                             <div style={{display:'flex',gap:"8%",justifyContent:'flex-start' ,alignItems:'center' ,flex:'8',width:'100%' ,height:'100%',
                             color:styles.text ,fontFamily:"inter",fontWeight:"400" ,lineHeight:"15px",fontSize:"100%",paddingLeft:'16px'}}>
