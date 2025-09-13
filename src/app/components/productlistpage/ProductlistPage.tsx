@@ -276,15 +276,16 @@ import { addToCart } from '@/toolkit/cartSlice';
 
 interface ProductListPageProps {
   initialProducts: Product[];
+  totalPageNum: number;
 }
 
-const ProductListPage: FC<ProductListPageProps> = ({initialProducts}) => {
+const ProductListPage: FC<ProductListPageProps> = ({initialProducts,totalPageNum}) => {
   console.log("newInitProducts",initialProducts)
   const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>(initialProducts || []);
   const [currentPage, setCurrentPage] = useState(1);
   const [PER_PAGE, setPER_PAGE] = useState(8);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(totalPageNum);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recentlyViewedProduct, setrecentlyViewedProduct] = useState<Product | null>(null);

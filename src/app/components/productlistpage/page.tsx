@@ -40,6 +40,7 @@ export const revalidate = 60;
  const url = `${config.apiUrl}/api/product/clientproducts?page=${page}&perPage=${PER_PAGE}`;
     const response = await fetch(url, { next: { revalidate: 60 } }); // ISR
     const data = await response.json();
+    console.log("responsefromserver",data)
     const { products: apiProducts, totalPages } = data;
 
     const mappedProducts: Product[] = apiProducts.map((item: ApiProduct) => ({
@@ -54,6 +55,7 @@ export const revalidate = 60;
     return (
       <ProductListPage
         initialProducts={mappedProducts}
+        totalPageNum={totalPages || 1}
       />
     );
   } catch (error) {
